@@ -6,7 +6,7 @@ import "./ERC20TD.sol";
 import "./IExerciceSolution.sol";
 import "./IAllInOneSolution.sol";
 
-contract Evaluator 
+contract Evaluator
 {
 
 	mapping(address => bool) public teachers;
@@ -25,17 +25,17 @@ contract Evaluator
 
  	event newRandomTickerAndSupply(string ticker, uint256 supply);
  	event constructedCorrectly(address erc20Address);
-	constructor(ERC20TD _erc20tdAddress)  
+	constructor(ERC20TD _erc20tdAddress)
 	{
 		erc20tdAddress = _erc20tdAddress;
 		emit constructedCorrectly(address(erc20tdAddress));
 
 	}
 
-	fallback () external payable 
+	fallback () external payable
 	{}
 
-	receive () external payable 
+	receive () external payable
 	{}
 
 
@@ -137,11 +137,11 @@ contract Evaluator
 		require(!studentErc20[msg.sender].isCustomerWhiteListed(address(this)));
 
 		bool wasBuyAccepted = true;
-		try studentErc20[msg.sender].getToken() returns (bool v) 
+		try studentErc20[msg.sender].getToken() returns (bool v)
 		{
 			wasBuyAccepted = v;
-        } 
-        catch 
+        }
+        catch
         {
             // This is executed in case revert() was used.
             wasBuyAccepted = false;
@@ -190,11 +190,11 @@ contract Evaluator
 		require(studentErc20[msg.sender].customerTierLevel(address(this)) == 0);
 
 		bool wasBuyAccepted = true;
-		try studentErc20[msg.sender].buyToken{value: 0.0001 ether}() returns (bool v) 
+		try studentErc20[msg.sender].buyToken{value: 0.0001 ether}() returns (bool v)
 		{
 			wasBuyAccepted = v;
-        } 
-        catch 
+        }
+        catch
         {
             // This is executed in case revert() was used.
             wasBuyAccepted = false;
@@ -264,8 +264,8 @@ contract Evaluator
 		}
 	}
 
-	function ex10_allInOne() 
-	public  
+	function ex10_allInOne()
+	public
 	{
 		// Checking that solution has no token yet
 		uint256 initialBalance = erc20tdAddress.balanceOf(msg.sender);
@@ -290,10 +290,10 @@ contract Evaluator
 	}
 
 
-	/* Internal functions and modifiers */ 
+	/* Internal functions and modifiers */
 
 
-	modifier onlyTeachers() 
+	modifier onlyTeachers()
 	{
 
 	    require(erc20tdAddress.teachers(msg.sender));
@@ -319,20 +319,20 @@ contract Evaluator
 			// Deploying contract points
 			erc20tdAddress.distributeTokens(msg.sender, 1);
 		}
-			
+
 	}
 
-	function _compareStrings(string memory a, string memory b) 
-	internal 
-	pure 
-	returns (bool) 
+	function _compareStrings(string memory a, string memory b)
+	internal
+	pure
+	returns (bool)
 	{
     	return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
 	}
 
-	function bytes32ToString(bytes32 _bytes32) 
-	public 
-	pure returns (string memory) 
+	function bytes32ToString(bytes32 _bytes32)
+	public
+	pure returns (string memory)
 	{
         uint8 i = 0;
         while(i < 32 && _bytes32[i] != 0) {
@@ -396,8 +396,8 @@ contract Evaluator
 		return assignedSupply[studentAddres];
 	}
 
-	function setRandomTickersAndSupply(uint256[20] memory _randomSupplies, string[20] memory _randomTickers) 
-	public 
+	function setRandomTickersAndSupply(uint256[20] memory _randomSupplies, string[20] memory _randomTickers)
+	public
 	onlyTeachers
 	{
 		randomSupplies = _randomSupplies;
